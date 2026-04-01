@@ -1,5 +1,6 @@
 // import AppRoutes from "./routes/AppRoutes";
 // import { BrowserRouter } from "react-router-dom"
+import PatientsPage from "./features/patients/pages/PatientsPage"
 
 function App() {
   
@@ -9,7 +10,9 @@ function App() {
       //     <AppRoutes />
       //   </main>
       // </BrowserRouter>
-      <main></main>
+      <main>
+          <PatientsPage />
+      </main>
   )
 }
 
