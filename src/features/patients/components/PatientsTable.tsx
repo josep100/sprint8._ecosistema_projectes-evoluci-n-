@@ -1,4 +1,3 @@
-import usePatients from "../hooks/usePatients";
 import PatientRow from "./PatientRow";
 import {
   Table,
@@ -7,11 +6,9 @@ import {
   TableRow,
   TableHead,
 } from "../../../components/ui/table";
-import type { Patient } from "../types/patient.types";
+import type { PatientsTableProps } from "../types/patient.types";
 
-const PatientsTable = ({patients}: { patients: Patient[] }) => {
-  //const { patients, error, loading } = usePatients();
-
+const PatientsTable = ({ patients, onDelete }: PatientsTableProps) => {
   return (
     <Table>
       <TableHeader>
@@ -25,24 +22,13 @@ const PatientsTable = ({patients}: { patients: Patient[] }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {patients.map(
-          ({
-            id_patient,
-            patient_image,
-            patient_name,
-            alopecia_type,
-            status,
-          }) => (
-            <PatientRow
-              key={id_patient}
-              id_patient={id_patient}
-              patient_image={patient_image}
-              patient_name={patient_name}
-              alopecia_type={alopecia_type}
-              status={status}
-            />
-          ),
-        )}
+        {patients.map((patient) => (
+          <PatientRow
+            key={patient.id_patient}
+            {...patient}
+            onDelete={onDelete}
+          />
+        ))}
       </TableBody>
     </Table>
   );

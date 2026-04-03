@@ -10,7 +10,7 @@ import {
 const PatientsPagination = ({
   totalPages,
   currentPage,
-  onPageChange,
+  onPageChange
 }: {
   totalPages: number;
   currentPage: number;
