@@ -1,5 +1,9 @@
-import { getPatients, deletePatient } from "../services/patients.service";
-import type { Patient } from "../types/patient.types";
+import {
+  getPatients,
+  deletePatient,
+  createPatient,
+} from "../services/patients.service";
+import type { Patient, PatientFormData } from "../types/patient.types";
 import type { PostgrestError } from "@supabase/supabase-js"; // lo tengo que mirar nás hacia delante
 import { useEffect, useState } from "react";
 
@@ -48,7 +52,30 @@ const usePatients = (page: number, perPage: number) => {
     }
   };
 
-  return { patients, error, loading, count, removePatient };
+  const insertPatient = async (data: PatientFormData) => {
+  try {
+    const error = await createPatient(data);
+
+    if (error) {
+      setError(error);
+      return error;
+    }
+
+    await fetchPatients();
+    return null;
+  } catch (error) {
+    console.error(error);
+
+    const unexpectedError = {
+      message: "Error inesperado",
+    } as PostgrestError;
+
+    setError(unexpectedError);
+    return unexpectedError;
+  }
+};
+
+  return { patients, error, loading, count, removePatient, insertPatient };
 };
 
 export default usePatients;

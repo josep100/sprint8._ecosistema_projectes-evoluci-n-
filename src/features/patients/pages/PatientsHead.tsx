@@ -1,13 +1,8 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../../../components/ui/dialog";
+import type { PatientsHeadProps } from "../types/patient.types";
+import PatientDialog from "../components/PatientDialog";
+import { Button } from "../../../components/ui/button";
 
-const PatientsHead = () => {
+const PatientsHead = ({ onSubmit }: PatientsHeadProps) => {
   return (
     <>
       <h1>Gestión de pacientes</h1>
@@ -15,18 +10,14 @@ const PatientsHead = () => {
         Gestionar y realizar el seguimiento de los historiales clínicos de todos
         los pacientes sometidos a restauración capilar.
       </p>
-      <Dialog>
-        <DialogTrigger>Agregar nuevo paciente</DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
+
+      <PatientDialog
+        title="Nuevo paciente"
+        description="Agregar nuevo paciente"
+        onSubmit={onSubmit}
+      >
+        <Button>Agregar paciente</Button>
+      </PatientDialog>
     </>
   );
 };
