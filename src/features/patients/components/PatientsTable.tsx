@@ -8,7 +8,7 @@ import {
 } from "../../../components/ui/table";
 import type { PatientsTableProps } from "../types/patient.types";
 
-const PatientsTable = ({ patients, onDelete }: PatientsTableProps) => {
+const PatientsTable = ({ patients, onDelete, onEdit }: PatientsTableProps) => {
   return (
     <Table>
       <TableHeader>
@@ -27,6 +27,7 @@ const PatientsTable = ({ patients, onDelete }: PatientsTableProps) => {
             key={patient.id_patient}
             {...patient}
             onDelete={onDelete}
+            onEdit={onEdit}
           />
         ))}
       </TableBody>

@@ -7,17 +7,25 @@ import { perPage } from "../../../config/constants";
 import { toast } from "sonner";
 import type { PatientFormData } from "../types/patient.types";
 
+
 const PatientsPage = () => {
   const onPageChange = (currentPage: number) => setCurrentPage(currentPage);
   const [currentPage, setCurrentPage] = useState(1);
-  const { patients, error, loading, count, removePatient, insertPatient } =
-    usePatients(currentPage, perPage);
+  const {
+    patients,
+    error,
+    loading,
+    count,
+    removePatient,
+    insertPatient,
+    handleUpdatePatient,
+  } = usePatients(currentPage, perPage);
 
   const totalPages = Math.ceil(count / perPage);
 
   const onDelete = async (id: number) => {
     const resp = await removePatient(id);
-    console.log(resp.error);
+
     if (resp.error) {
       toast.error("No se pudo eliminar el paciente", {
         position: "top-center",
@@ -45,10 +53,34 @@ const PatientsPage = () => {
     return true;
   };
 
+  const handleEditPatient = async (
+    idPatient: number,
+    data: PatientFormData,
+  ) => {
+    const success = await handleUpdatePatient(idPatient, data);
+
+    if (!success) {
+      toast.error("No se pudo actualizar el paciente", {
+        position: "top-center",
+      });
+      return false;
+    }
+
+    toast.success("Paciente actualizado correctamente", {
+      position: "top-center",
+    });
+
+    return true;
+  };
+
   return (
     <>
       <PatientsHead onSubmit={handleSubmitPatient} />
-      <PatientsTable patients={patients} onDelete={onDelete} />
+      <PatientsTable
+        patients={patients}
+        onDelete={onDelete}
+        onEdit={handleEditPatient}
+      />
       <PatientsPagination
         totalPages={totalPages}
         currentPage={currentPage}

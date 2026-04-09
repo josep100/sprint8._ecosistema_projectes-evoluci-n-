@@ -1,23 +1,24 @@
 import * as z from "zod";
 
 export const ALOPECIA_TYPES = [
-  "androgenética",
-  "areata",
-  "telógeno",
-  "difusa",
-  "cicatricial",
-  "por_tracción",
-  "frontal_fibrosante",
-  "anágeno",
-  "otro",
-  "desconocido",
+  "Androgénica",
+  "Areata",
+  "Aelógeno",
+  "Difusa",
+  "Cicatricial",
+  "Por_Tracción",
+  "Frontal_Fibrosante",
+  "Anágeno",
+  "Otro",
+  "Desconocido",
 ] as const;
 
 export const STATUS_TYPES = [
-  "activo",
-  "en_tratamiento",
-  "seguimiento",
-  "finalizado",
+  "Active",
+  "Inactive",
+  "En_Tratamiento",
+  "Seguimiento",
+  "Finalizado",
 ] as const;
 
 export const patientSchema = z.object({

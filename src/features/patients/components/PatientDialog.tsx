@@ -21,7 +21,6 @@ const PatientDialog = ({
   children,
 }: PatientDialogProps) => {
   const [open, setOpen] = useState(false);
-
   const handleSubmit = async (data: PatientFormData) => {
     const success = await onSubmit(data);
 

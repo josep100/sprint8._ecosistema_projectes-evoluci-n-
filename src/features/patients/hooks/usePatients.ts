@@ -2,6 +2,7 @@ import {
   getPatients,
   deletePatient,
   createPatient,
+  updatePatient,
 } from "../services/patients.service";
 import type { Patient, PatientFormData } from "../types/patient.types";
 import type { PostgrestError } from "@supabase/supabase-js"; // lo tengo que mirar nás hacia delante
@@ -53,29 +54,63 @@ const usePatients = (page: number, perPage: number) => {
   };
 
   const insertPatient = async (data: PatientFormData) => {
-  try {
-    const error = await createPatient(data);
+    try {
+      const error = await createPatient(data);
 
-    if (error) {
-      setError(error);
-      return error;
+      if (error) {
+        setError(error);
+        return error;
+      }
+
+      await fetchPatients();
+      return null;
+    } catch (error) {
+      console.error(error);
+
+      const unexpectedError = {
+        message: "Error inesperado",
+      } as PostgrestError;
+
+      setError(unexpectedError);
+      return unexpectedError;
     }
+  };
 
-    await fetchPatients();
-    return null;
-  } catch (error) {
-    console.error(error);
+  const handleUpdatePatient = async (
+    idPatient: number,
+    data: PatientFormData,
+  ) => {
+    try {
+      const error = await updatePatient(data, idPatient);
 
-    const unexpectedError = {
-      message: "Error inesperado",
-    } as PostgrestError;
+      if (error) {
+        setError(error);
+        return false;
+      }
 
-    setError(unexpectedError);
-    return unexpectedError;
-  }
-};
+      await fetchPatients();
+      return true;
+    } catch (error) {
+      console.error(error);
 
-  return { patients, error, loading, count, removePatient, insertPatient };
+      const unexpectedError = {
+        message: "Error inesperado",
+      } as PostgrestError;
+
+      setError(unexpectedError);
+      return false;
+    }
+  };
+
+  return {
+    patients,
+    error,
+    loading,
+    count,
+    removePatient,
+    insertPatient,
+    handleUpdatePatient,
+  };
 };
 
 export default usePatients;

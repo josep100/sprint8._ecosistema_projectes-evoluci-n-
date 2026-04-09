@@ -12,14 +12,15 @@ export type Patient = {
   status: PatientFormData["status"];
 };
 
-
 export type PatientRowProps = Patient & {
   onDelete: (id: number) => void;
+  onEdit: (id: number, data: PatientFormData) => Promise<boolean>;
 };
 
 export type PatientsTableProps = {
   patients: Patient[];
   onDelete: (id: number) => void;
+  onEdit: (id: number, data: PatientFormData) => Promise<boolean>;
 };
 
 export interface PatientFormProps {

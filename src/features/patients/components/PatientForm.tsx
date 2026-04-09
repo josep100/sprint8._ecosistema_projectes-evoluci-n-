@@ -23,32 +23,42 @@ import {
   ALOPECIA_TYPES,
   STATUS_TYPES,
 } from "../schema/patient.schema";
+import { useEffect } from "react";
 
 const PatientForm = ({ defaultValues, onSubmit }: PatientFormProps) => {
+  console.log(defaultValues);
   const form = useForm<PatientFormData>({
     resolver: zodResolver(patientSchema),
     defaultValues: defaultValues || {
       name: "",
-      alopeciaType: "androgenética",
-      status: "activo",
+      alopeciaType: "Androgénica",
+      status: "Active",
       image: null,
     },
   });
 
+  useEffect(() => {
+    if (defaultValues) {
+      form.reset(defaultValues);
+    }
+  }, [defaultValues, form]);
+
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
-        <Field>
-          <FieldLabel htmlFor="name">Nombre completo del paciente</FieldLabel>
-          <Input
-            id="name"
-            placeholder="p.ej. Sergio García"
-            {...form.register("name")}
-          />
-          {form.formState.errors.name && (
-            <FieldError errors={[form.formState.errors.name]} />
+        <Controller
+          name="name"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="name">
+                Nombre completo del paciente
+              </FieldLabel>
+              <Input {...field} id="name" placeholder="p.ej. Sergio García" />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
-        </Field>
+        />
 
         <Controller
           name="alopeciaType"
@@ -57,7 +67,7 @@ const PatientForm = ({ defaultValues, onSubmit }: PatientFormProps) => {
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="alopeciaType">Tipo de alopecia</FieldLabel>
               <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger>
+                <SelectTrigger id="alopeciaType">
                   <SelectValue placeholder="Seleccione el tipo de diagnóstico" />
                 </SelectTrigger>
                 <SelectContent>
@@ -95,7 +105,7 @@ const PatientForm = ({ defaultValues, onSubmit }: PatientFormProps) => {
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="status">Estado actual</FieldLabel>
               <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger>
+                <SelectTrigger id="status">
                   <SelectValue placeholder="Selecciona el estado" />
                 </SelectTrigger>
                 <SelectContent>
@@ -114,7 +124,6 @@ const PatientForm = ({ defaultValues, onSubmit }: PatientFormProps) => {
         />
       </FieldGroup>
 
-      
       <div className="flex gap-2 mt-4">
         <Button type="button" variant="outline" onClick={() => form.reset()}>
           Reiniciar
