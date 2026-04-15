@@ -8,11 +8,13 @@ export const getPatients = async ({
   perPage,
   type,
   status,
+  search
 }: {
   page?: number;
   perPage?: number;
   type?: string;
   status?: string;
+  search?: string;
 }) => {
   let query = supabase
     .from("patients")
@@ -27,6 +29,10 @@ export const getPatients = async ({
   if (status) {
     query = query.eq("status", status);
   }
+
+  if (search && search.trim() !== "") {
+  query = query.ilike("patient_name", `%${search}%`);
+}
   // if (page && perPage) {
   //   const start = (page - 1) * perPage;
   //   const end = start + perPage - 1;

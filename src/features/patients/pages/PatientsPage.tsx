@@ -1,6 +1,7 @@
 import usePatients from "../hooks/usePatients";
 import PatientsTable from "../components/PatientsTable";
 import PatientsPagination from "../components/PatientsPagination";
+import PatientsSearch from "../components/PatientsSearch";
 import PatientsHead from "./PatientsHead";
 import { useEffect, useState } from "react";
 import { perPage } from "../../../config/constants";
@@ -15,6 +16,7 @@ import PatientFilter from "../components/PatientFilter";
 type TipoDeFilters = {
   type?: string;
   status?: string;
+  search?: string
 };
 
 const PatientsPage = () => {
@@ -100,6 +102,7 @@ const PatientsPage = () => {
 
   return (
     <>
+      <PatientsSearch setFilter={handleFilterPatients} />
       <PatientsHead onSubmit={handleSubmitPatient} />
       <PatientFilter setFilter={handleFilterPatients} />
       <PatientsTable
