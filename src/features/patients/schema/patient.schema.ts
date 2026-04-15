@@ -16,9 +16,9 @@ export const ALOPECIA_TYPES = [
 export const STATUS_TYPES = [
   "Active",
   "Inactive",
-  "En_Tratamiento",
-  "Seguimiento",
-  "Finalizado",
+  "In_Treatment",
+  "Consultation",
+  "Completed",
 ] as const;
 
 export const patientSchema = z.object({

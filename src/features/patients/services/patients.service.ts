@@ -3,19 +3,37 @@ import HARDCODED_DOCTOR_ID from "../../../config/constants";
 import type { PatientFormData } from "../types/patient.types";
 import { mapFormToPatient } from "../utils/patient.mapper";
 
-export const getPatients = async (page: number, perPage: number) => {
-  const start = (page - 1) * perPage;
-  const end = start + perPage - 1;
-
-  const { data, error, count } = await supabase
+export const getPatients = async ({
+  page,
+  perPage,
+  type,
+  status,
+}: {
+  page?: number;
+  perPage?: number;
+  type?: string;
+  status?: string;
+}) => {
+  let query = supabase
     .from("patients")
     .select("id_patient, patient_image, patient_name, alopecia_type, status", {
       count: "exact",
     })
     .eq("doctor_auth_uid", HARDCODED_DOCTOR_ID)
-    .range(start, end)
     .order("id_patient", { ascending: true });
+  if (type && type !== "all") {
+    query = query.eq("alopecia_type", type);
+  }
+  if (status) {
+    query = query.eq("status", status);
+  }
+  // if (page && perPage) {
+  //   const start = (page - 1) * perPage;
+  //   const end = start + perPage - 1;
+  //   query = query.range(start, end);
+  // }
 
+  const { data, error, count } = await query;
   return { data, error, count };
 };
 

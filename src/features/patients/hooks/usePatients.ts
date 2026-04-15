@@ -14,10 +14,10 @@ const usePatients = (page: number, perPage: number) => {
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
 
-  const fetchPatients = async () => {
+  const fetchPatients = async (filtre?) => {
     try {
       setLoading(true);
-      const resp = await getPatients(page, perPage);
+      const resp = await getPatients({ page, perPage, ...filtre });
       setPatients(resp.data ?? []);
       setCount(resp.count ?? 0);
     } catch (error) {
@@ -107,9 +107,11 @@ const usePatients = (page: number, perPage: number) => {
     error,
     loading,
     count,
+    setPatients,
     removePatient,
     insertPatient,
     handleUpdatePatient,
+    fetchPatients,
   };
 };
 

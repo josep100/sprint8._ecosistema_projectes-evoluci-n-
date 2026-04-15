@@ -39,3 +39,9 @@ export interface PatientDialogProps {
   defaultValues?: PatientFormData;
   children: ReactNode;
 }
+
+export type PatientFilterType =
+  | "all"
+  | "Androgénica"
+  | "areata"
+  | "telogeno";

@@ -2,23 +2,35 @@ import usePatients from "../hooks/usePatients";
 import PatientsTable from "../components/PatientsTable";
 import PatientsPagination from "../components/PatientsPagination";
 import PatientsHead from "./PatientsHead";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { perPage } from "../../../config/constants";
 import { toast } from "sonner";
-import type { PatientFormData } from "../types/patient.types";
+import type {
+  PatientFormData,
+  PatientFilterType,
+  Patient,
+} from "../types/patient.types";
+import PatientFilter from "../components/PatientFilter";
 
+type TipoDeFilters = {
+  type?: string;
+  status?: string;
+};
 
 const PatientsPage = () => {
   const onPageChange = (currentPage: number) => setCurrentPage(currentPage);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState<TipoDeFilters>({});
   const {
     patients,
     error,
     loading,
     count,
+    setPatients,
     removePatient,
     insertPatient,
     handleUpdatePatient,
+    fetchPatients,
   } = usePatients(currentPage, perPage);
 
   const totalPages = Math.ceil(count / perPage);
@@ -73,19 +85,33 @@ const PatientsPage = () => {
     return true;
   };
 
+  useEffect(() => {
+    fetchPatients(filters);
+  }, [filters]);
+
+  const handleFilterPatients = async (filter) => {
+    if (filter === "all") {
+      setFilters({});
+      return;
+    }
+
+    setFilters((prev) => ({ ...prev, ...filter }));
+  };
+
   return (
     <>
       <PatientsHead onSubmit={handleSubmitPatient} />
+      <PatientFilter setFilter={handleFilterPatients} />
       <PatientsTable
         patients={patients}
         onDelete={onDelete}
         onEdit={handleEditPatient}
       />
-      <PatientsPagination
+      {/* <PatientsPagination
         totalPages={totalPages}
         currentPage={currentPage}
         onPageChange={onPageChange}
-      />
+      /> */}
     </>
   );
 };
