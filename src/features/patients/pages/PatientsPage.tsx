@@ -6,64 +6,75 @@ import PatientsHead from "./PatientsHead";
 import { useEffect, useState } from "react";
 import { perPage } from "../../../config/constants";
 import { toast } from "sonner";
-import type {
-  PatientFormData,
-  PatientFilterType,
-  Patient,
-} from "../types/patient.types";
+import type { PatientFormData } from "../types/patient.types";
 import PatientFilter from "../components/PatientFilter";
 
-type TipoDeFilters = {
+type Filters = {
   type?: string;
   status?: string;
-  search?: string
+  search?: string;
 };
 
 const PatientsPage = () => {
-  const onPageChange = (currentPage: number) => setCurrentPage(currentPage);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filters, setFilters] = useState<TipoDeFilters>({});
+  const [filters, setFilters] = useState<Filters>({});
+
   const {
     patients,
     error,
     loading,
     count,
-    setPatients,
+    fetchPatients,
     removePatient,
     insertPatient,
     handleUpdatePatient,
-    fetchPatients,
-  } = usePatients(currentPage, perPage);
+  } = usePatients();
 
   const totalPages = Math.ceil(count / perPage);
+
+  useEffect(() => {
+    fetchPatients(currentPage, perPage, filters);
+  }, [currentPage, filters]);
+
+  const onPageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleFilterPatients = (filter: Partial<Filters> | "all") => {
+    if (filter === "all") {
+      setFilters({});
+      setCurrentPage(1);
+      return;
+    }
+
+    setFilters((prev) => ({ ...prev, ...filter }));
+    setCurrentPage(1); // 👈 MUY IMPORTANTE
+  };
 
   const onDelete = async (id: number) => {
     const resp = await removePatient(id);
 
     if (resp.error) {
-      toast.error("No se pudo eliminar el paciente", {
-        position: "top-center",
-      });
+      toast.error("No se pudo eliminar el paciente");
       return;
     }
-    toast.success("Paciente eliminado correctamente", {
-      position: "top-center",
-    });
+
+    toast.success("Paciente eliminado correctamente");
+
+    fetchPatients(currentPage, perPage, filters);
   };
 
   const handleSubmitPatient = async (data: PatientFormData) => {
     const error = await insertPatient(data);
 
     if (error) {
-      toast.error("No se pudo crear el paciente", {
-        position: "top-center",
-      });
+      toast.error("No se pudo crear el paciente");
       return false;
     }
 
-    toast.success("Paciente creado correctamente", {
-      position: "top-center",
-    });
+    toast.success("Paciente creado correctamente");
+
+    fetchPatients(currentPage, perPage, filters);
     return true;
   };
 
@@ -74,30 +85,14 @@ const PatientsPage = () => {
     const success = await handleUpdatePatient(idPatient, data);
 
     if (!success) {
-      toast.error("No se pudo actualizar el paciente", {
-        position: "top-center",
-      });
+      toast.error("No se pudo actualizar el paciente");
       return false;
     }
 
-    toast.success("Paciente actualizado correctamente", {
-      position: "top-center",
-    });
+    toast.success("Paciente actualizado correctamente");
 
+    fetchPatients(currentPage, perPage, filters);
     return true;
-  };
-
-  useEffect(() => {
-    fetchPatients(filters);
-  }, [filters]);
-
-  const handleFilterPatients = async (filter) => {
-    if (filter === "all") {
-      setFilters({});
-      return;
-    }
-
-    setFilters((prev) => ({ ...prev, ...filter }));
   };
 
   return (
@@ -105,16 +100,18 @@ const PatientsPage = () => {
       <PatientsSearch setFilter={handleFilterPatients} />
       <PatientsHead onSubmit={handleSubmitPatient} />
       <PatientFilter setFilter={handleFilterPatients} />
+
       <PatientsTable
         patients={patients}
         onDelete={onDelete}
         onEdit={handleEditPatient}
       />
-      {/* <PatientsPagination
+
+      <PatientsPagination
         totalPages={totalPages}
         currentPage={currentPage}
         onPageChange={onPageChange}
-      /> */}
+      />
     </>
   );
 };

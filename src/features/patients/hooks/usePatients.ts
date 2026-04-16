@@ -5,19 +5,23 @@ import {
   updatePatient,
 } from "../services/patients.service";
 import type { Patient, PatientFormData } from "../types/patient.types";
-import type { PostgrestError } from "@supabase/supabase-js"; // lo tengo que mirar nás hacia delante
-import { useEffect, useState } from "react";
+import type { PostgrestError } from "@supabase/supabase-js";
+import { useState } from "react";
 
-const usePatients = (page: number, perPage: number) => {
+const usePatients = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [error, setError] = useState<PostgrestError | null>(null);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
 
-  const fetchPatients = async (filtre?) => {
+  const fetchPatients = async (
+    page: number,
+    perPage: number,
+    filters?: any,
+  ) => {
     try {
       setLoading(true);
-      const resp = await getPatients({ page, perPage, ...filtre });
+      const resp = await getPatients({ page, perPage, ...filters });
       setPatients(resp.data ?? []);
       setCount(resp.count ?? 0);
     } catch (error) {
@@ -27,79 +31,28 @@ const usePatients = (page: number, perPage: number) => {
     }
   };
 
-  useEffect(() => {
-    fetchPatients();
-  }, [page]);
-
   const removePatient = async (id: number) => {
-    try {
-      const resp = await deletePatient(id);
-
-      if (resp.error) {
-        setError(resp.error);
-        return resp;
-      }
-
-      await fetchPatients();
-      return resp;
-    } catch (error) {
-      console.error(error);
-
-      setError({
-        message: "Error inesperado",
-      } as PostgrestError);
-
-      return { error };
-    }
+    const resp = await deletePatient(id);
+    if (resp.error) setError(resp.error);
+    return resp;
   };
 
   const insertPatient = async (data: PatientFormData) => {
-    try {
-      const error = await createPatient(data);
-
-      if (error) {
-        setError(error);
-        return error;
-      }
-
-      await fetchPatients();
-      return null;
-    } catch (error) {
-      console.error(error);
-
-      const unexpectedError = {
-        message: "Error inesperado",
-      } as PostgrestError;
-
-      setError(unexpectedError);
-      return unexpectedError;
-    }
+    const error = await createPatient(data);
+    if (error) setError(error);
+    return error;
   };
 
   const handleUpdatePatient = async (
     idPatient: number,
     data: PatientFormData,
   ) => {
-    try {
-      const error = await updatePatient(data, idPatient);
-
-      if (error) {
-        setError(error);
-        return false;
-      }
-
-      await fetchPatients();
-      return true;
-    } catch (error) {
-      console.error(error);
-
-      const unexpectedError = {
-        message: "Error inesperado",
-      } as PostgrestError;
-
-      setError(unexpectedError);
+    const error = await updatePatient(data, idPatient);
+    if (error) {
+      setError(error);
       return false;
     }
+    return true;
   };
 
   return {
@@ -107,14 +60,11 @@ const usePatients = (page: number, perPage: number) => {
     error,
     loading,
     count,
-    setPatients,
+    fetchPatients,
     removePatient,
     insertPatient,
     handleUpdatePatient,
-    fetchPatients,
   };
 };
 
 export default usePatients;
-
-//TensorFlow

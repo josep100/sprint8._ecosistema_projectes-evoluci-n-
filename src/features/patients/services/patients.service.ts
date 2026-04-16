@@ -33,11 +33,11 @@ export const getPatients = async ({
   if (search && search.trim() !== "") {
   query = query.ilike("patient_name", `%${search}%`);
 }
-  // if (page && perPage) {
-  //   const start = (page - 1) * perPage;
-  //   const end = start + perPage - 1;
-  //   query = query.range(start, end);
-  // }
+  if (page && perPage) {
+    const start = (page - 1) * perPage;
+    const end = start + perPage - 1;
+    query = query.range(start, end);
+  }
 
   const { data, error, count } = await query;
   return { data, error, count };
