@@ -99,7 +99,7 @@ const PatientsPage = () => {
     <>
       <PatientsSearch setFilter={handleFilterPatients} />
       <PatientsHead onSubmit={handleSubmitPatient} />
-      <PatientFilter setFilter={handleFilterPatients} />
+      <PatientFilter setFilter={handleFilterPatients} filters={filters} />
 
       <PatientsTable
         patients={patients}

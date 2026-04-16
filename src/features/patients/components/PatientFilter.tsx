@@ -8,50 +8,38 @@ import {
   SelectValue,
 } from "../../../components/ui/select";
 
-const PatientFilter = ({ setFilter }) => {
+const PatientFilter = ({ setFilter, filters }) => {
   return (
     <section>
       <h2>Filtros:</h2>
+
       <div>
-        <Button
-          onClick={() => {
-            setFilter("all");
-          }}
-        >
+        <Button onClick={() => setFilter("all")}>
           Todos los pacientes
         </Button>
-        <Button
-          onClick={() => {
-            setFilter({ type: "Androgénica" });
-          }}
-        >
+
+        <Button onClick={() => setFilter({ type: "Androgénica" })}>
           Androgénica
         </Button>
 
-        <Button
-          onClick={() => {
-            setFilter({ type: "Areata" });
-          }}
-        >
+        <Button onClick={() => setFilter({ type: "Areata" })}>
           Areata
         </Button>
-        <Button
-          onClick={() => {
-            setFilter({ type: "Difusa" });
-          }}
-        >
+
+        <Button onClick={() => setFilter({ type: "Difusa" })}>
           Difusa
         </Button>
 
         <Select
-          defaultValue="Active"
+          value={filters.status || ""}
           onValueChange={(value) => {
             setFilter({ status: value });
           }}
         >
           <SelectTrigger className="w-full max-w-48">
-            <SelectValue />
+            <SelectValue placeholder="Estado del paciente" />
           </SelectTrigger>
+
           <SelectContent>
             <SelectGroup>
               <SelectItem value="Active">Activo</SelectItem>
