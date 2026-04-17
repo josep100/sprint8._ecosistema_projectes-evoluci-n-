@@ -2,12 +2,13 @@ import usePatients from "../hooks/usePatients";
 import PatientsTable from "../components/PatientsTable";
 import PatientsPagination from "../components/PatientsPagination";
 import PatientsSearch from "../components/PatientsSearch";
+import PatientFilter from "../components/PatientFilter";
+import PatientSpinner from "../components/PatientSpinner";
 import PatientsHead from "./PatientsHead";
 import { useEffect, useState } from "react";
 import { perPage } from "../../../config/constants";
 import { toast } from "sonner";
 import type { PatientFormData } from "../types/patient.types";
-import PatientFilter from "../components/PatientFilter";
 
 type Filters = {
   type?: string;
@@ -48,7 +49,7 @@ const PatientsPage = () => {
     }
 
     setFilters((prev) => ({ ...prev, ...filter }));
-    setCurrentPage(1); // 👈 MUY IMPORTANTE
+    setCurrentPage(1);
   };
 
   const onDelete = async (id: number) => {
@@ -100,18 +101,25 @@ const PatientsPage = () => {
       <PatientsSearch setFilter={handleFilterPatients} />
       <PatientsHead onSubmit={handleSubmitPatient} />
       <PatientFilter setFilter={handleFilterPatients} filters={filters} />
+      {loading ? (
+        <PatientSpinner />
+      ) : error ? (
+        <p>error.message</p>
+      ) : (
+        <>
+          <PatientsTable
+            patients={patients}
+            onDelete={onDelete}
+            onEdit={handleEditPatient}
+          />
 
-      <PatientsTable
-        patients={patients}
-        onDelete={onDelete}
-        onEdit={handleEditPatient}
-      />
-
-      <PatientsPagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={onPageChange}
-      />
+          <PatientsPagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={onPageChange}
+          />
+        </>
+      )}
     </>
   );
 };

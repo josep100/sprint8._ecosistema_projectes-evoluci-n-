@@ -42,7 +42,7 @@ const PatientFilter = ({ setFilter, filters }) => {
 
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="Active">Activo</SelectItem>
+              <SelectItem value="Actives">Activo</SelectItem>
               <SelectItem value="Inactive">Inactivo</SelectItem>
               <SelectItem value="in_treatment">En Tratamiento</SelectItem>
               <SelectItem value="consultation">Consulta</SelectItem>
