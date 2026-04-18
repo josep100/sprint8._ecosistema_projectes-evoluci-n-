@@ -23,3 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+coverage/
+*.lcov
+coverage-final.json

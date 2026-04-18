@@ -22,11 +22,13 @@ const PatientDialog = ({
 }: PatientDialogProps) => {
   const [open, setOpen] = useState(false);
   const handleSubmit = async (data: PatientFormData) => {
-    const success = await onSubmit(data);
+    try {
+      const success = await onSubmit(data);
 
-    if (success) {
-      setOpen(false);
-    }
+      if (success) {
+        setOpen(false);
+      }
+    } catch (error) {}
   };
 
   return (
@@ -46,6 +48,3 @@ const PatientDialog = ({
 };
 
 export default PatientDialog;
-
-//Nueva entrada
-// Agregar nuevo paciente
