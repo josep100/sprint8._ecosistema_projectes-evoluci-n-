@@ -4,7 +4,7 @@ import { Button } from "../../../components/ui/button";
 
 const PatientsHead = ({ onSubmit }: PatientsHeadProps) => {
   return (
-    <>
+    <header>
       <h1>Gestión de pacientes</h1>
       <p>
         Gestionar y realizar el seguimiento de los historiales clínicos de todos
@@ -18,7 +18,7 @@ const PatientsHead = ({ onSubmit }: PatientsHeadProps) => {
       >
         <Button>Agregar paciente</Button>
       </PatientDialog>
-    </>
+    </header>
   );
 };
 

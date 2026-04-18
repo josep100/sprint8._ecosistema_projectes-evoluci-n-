@@ -9,11 +9,19 @@ import {
   DropdownMenuTrigger,
 } from "../../../components/ui/dropdown-menu";
 
-const PatientActions = ({id_patient,onDelete}: {id_patient: number, onDelete: (id: number) => void}) => {
+const PatientActions = ({
+  id_patient,
+  onDelete,
+}: {
+  id_patient: number;
+  onDelete: (id: number) => void;
+}) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="" variant="outline"><MoreVertical /></Button>
+        <Button variant="outline" aria-label="Abrir acciones del paciente">
+          <MoreVertical aria-hidden="true" />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
@@ -28,9 +36,12 @@ const PatientActions = ({id_patient,onDelete}: {id_patient: number, onDelete: (i
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem variant="destructive" onSelect={() => {
+          <DropdownMenuItem
+            variant="destructive"
+            onSelect={() => {
               onDelete(id_patient);
-          }}>
+            }}
+          >
             <TrashIcon />
             Delete
           </DropdownMenuItem>
