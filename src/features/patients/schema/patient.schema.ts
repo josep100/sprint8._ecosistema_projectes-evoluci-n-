@@ -21,6 +21,12 @@ export const STATUS_TYPES = [
   "Completed",
 ] as const;
 
+export const filtersAlopeciaTypes = [
+   "Androgénica",
+   "Areata",
+   "Difusa",
+]
+
 export const patientSchema = z.object({
   name: z.string().min(5, "El nombre debe tener al menos 5 caracteres").max(50),
   alopeciaType: z.enum(ALOPECIA_TYPES),

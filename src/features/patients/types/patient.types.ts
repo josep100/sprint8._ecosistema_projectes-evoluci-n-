@@ -12,6 +12,17 @@ export type Patient = {
   status: PatientFormData["status"];
 };
 
+export type Filters = {
+  alopeciaType?: string;
+  status?: string;
+  search?: string;
+};
+
+export type GetPatientsParams = {
+  page?: number;
+  perPage?: number;
+} & Filters;
+
 export type PatientRowProps = Patient & {
   onDelete: (id: number) => void;
   onEdit: (id: number, data: PatientFormData) => Promise<boolean>;
@@ -24,6 +35,7 @@ export type PatientsTableProps = {
 };
 
 export interface PatientFormProps {
+  buttonText: string;
   defaultValues?: Partial<PatientFormData>;
   onSubmit: (data: PatientFormData) => void;
 }
@@ -35,13 +47,24 @@ export interface PatientsHeadProps {
 export interface PatientDialogProps {
   title: string;
   description: string;
+  buttonText: string;
   onSubmit: (data: PatientFormData) => Promise<boolean>;
   defaultValues?: PatientFormData;
   children: ReactNode;
 }
 
-export type PatientFilterType =
-  | "all"
-  | "Androgénica"
-  | "areata"
-  | "telogeno";
+export type PatientFilterProps = {
+  setFilter: (filter: Partial<Filters> | "all") => void;
+  filters: Filters;
+};
+
+export type PatientsSearchProps = {
+  setFilter: (filter: { search?: string }) => void;
+};
+
+export type PatientPaginationProps = {
+  totalPages: number;
+  currentPage: number;
+  totalRegister: number;
+  onPageChange: (page: number) => void;
+};

@@ -1,4 +1,4 @@
-import { PencilIcon, ShareIcon, TrashIcon, MoreVertical } from "lucide-react";
+import { TrashIcon, MoreVertical, Folder, Brain, Calendar } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import {
   DropdownMenu,
@@ -19,19 +19,23 @@ const PatientActions = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" aria-label="Abrir acciones del paciente">
+        <Button className="border-none bg-transparent shadow-none cursor-pointer" variant="outline" aria-label="Abrir acciones del paciente">
           <MoreVertical aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="w-39">
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <PencilIcon />
-            Edit
+            <Folder className="w-5 h-5 text-slate-400" />
+            Ver Expediente
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <ShareIcon />
-            Share
+            <Brain className="w-5 h-5 text-slate-400" />
+            Nuevo Análisis IA
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Calendar className="w-5 h-5 text-slate-400" />
+            Agendar Cita
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
@@ -43,7 +47,7 @@ const PatientActions = ({
             }}
           >
             <TrashIcon />
-            Delete
+            Eliminar Paciente
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
