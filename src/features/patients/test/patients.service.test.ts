@@ -6,13 +6,8 @@ import {
   createPatient,
   updatePatient,
 } from "../services/patients.service";
+import * as mapper from "../utils/patient.mapper";
 
-// 🔹 Mock mapper
-vi.mock("../utils/patient.mapper", () => ({
-  mapFormToPatient: vi.fn(() => ({ mocked: true })),
-}));
-
-// 🔹 Mock Supabase chain 
 const chain = {
   select: vi.fn().mockReturnThis(),
   eq: vi.fn().mockReturnThis(),
@@ -22,10 +17,9 @@ const chain = {
   delete: vi.fn().mockReturnThis(),
   insert: vi.fn().mockReturnThis(),
   update: vi.fn().mockReturnThis(),
-  then: vi.fn(), // needed because query is awaited
+  then: vi.fn(),
 };
 
-// 🔹 Mock supabase client
 vi.mock("../../../shared/services/supabaseClient", () => ({
   default: {
     from: vi.fn(() => chain),
@@ -36,15 +30,11 @@ describe("patients.service", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // default resolved value for await query
     chain.then = vi.fn((resolve) =>
-      resolve({ data: [], error: null, count: 0 })
+      resolve({ data: [], error: null, count: 0 }),
     );
   });
 
-  // =========================
-  // GET PATIENTS
-  // =========================
   describe("getPatients", () => {
     it("should fetch patients without filters", async () => {
       await getPatients({});
@@ -55,21 +45,15 @@ describe("patients.service", () => {
     });
 
     it("should apply type filter when provided", async () => {
-      await getPatients({ type: "Androgénica" });
+      await getPatients({ alopeciaType: "Androgénica" });
 
-      expect(chain.eq).toHaveBeenCalledWith(
-        "alopecia_type",
-        "Androgénica"
-      );
+      expect(chain.eq).toHaveBeenCalledWith("alopecia_type", "Androgénica");
     });
 
     it("should not apply type filter when type is 'all'", async () => {
-      await getPatients({ type: "all" });
+      await getPatients({ alopeciaType: "all" });
 
-      expect(chain.eq).not.toHaveBeenCalledWith(
-        "alopecia_type",
-        "all"
-      );
+      expect(chain.eq).not.toHaveBeenCalledWith("alopecia_type", "all");
     });
 
     it("should apply status filter when provided", async () => {
@@ -81,10 +65,7 @@ describe("patients.service", () => {
     it("should apply search filter using ilike", async () => {
       await getPatients({ search: "sofia" });
 
-      expect(chain.ilike).toHaveBeenCalledWith(
-        "patient_name",
-        "%sofia%"
-      );
+      expect(chain.ilike).toHaveBeenCalledWith("patient_name", "%sofia%");
     });
 
     it("should not apply search when empty string", async () => {
@@ -100,9 +81,6 @@ describe("patients.service", () => {
     });
   });
 
-  // =========================
-  // DELETE PATIENT
-  // =========================
   describe("deletePatient", () => {
     it("should delete a patient by id", async () => {
       await deletePatient(1);
@@ -112,9 +90,6 @@ describe("patients.service", () => {
     });
   });
 
-  // =========================
-  // CREATE PATIENT
-  // =========================
   describe("createPatient", () => {
     it("should insert a new patient", async () => {
       await createPatient({
@@ -129,7 +104,9 @@ describe("patients.service", () => {
           patient_name: "Juan",
           alopecia_type: "Androgénica",
           status: "Active",
-        })
+          doctor_auth_uid: expect.any(String),
+          id_clinics_FK: 4,
+        }),
       );
     });
 
@@ -144,16 +121,15 @@ describe("patients.service", () => {
       expect(chain.insert).toHaveBeenCalledWith(
         expect.objectContaining({
           patient_image: null,
-        })
+        }),
       );
     });
   });
 
-  // =========================
-  // UPDATE PATIENT
-  // =========================
   describe("updatePatient", () => {
     it("should update a patient using mapped data", async () => {
+      vi.spyOn(mapper, "mapFormToPatient").mockReturnValue({ mocked: true });
+
       await updatePatient(
         {
           name: "Juan",
@@ -161,7 +137,7 @@ describe("patients.service", () => {
           alopeciaType: "Androgénica",
           status: "Active",
         },
-        1
+        1,
       );
 
       expect(chain.update).toHaveBeenCalledWith({ mocked: true });

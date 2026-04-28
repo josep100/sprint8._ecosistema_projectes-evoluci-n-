@@ -52,12 +52,12 @@ describe("PatientForm", () => {
   it("should show validation error when name is empty", async () => {
     const onSubmit = vi.fn();
 
-    render(<PatientForm onSubmit={onSubmit} />);
+    render(<PatientForm onSubmit={onSubmit} buttonText="Enviar" />);
 
-    fireEvent.click(screen.getByText("Enviar"));
+    fireEvent.click(screen.getByRole("button", { name: /enviar/i }));
 
     await waitFor(() => {
-      expect(screen.getAllByText("error").length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/error/i).length).toBeGreaterThan(0);
     });
 
     expect(onSubmit).not.toHaveBeenCalled();

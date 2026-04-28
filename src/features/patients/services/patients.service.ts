@@ -9,9 +9,9 @@ import { mapFormToPatient } from "../utils/patient.mapper";
 export const getPatients = async ({
   page,
   perPage,
-  type,
+  alopeciaType,
   status,
-  searchTerm,
+  search,
 }: GetPatientsParams) => {
   let query = supabase
     .from("patients")
@@ -21,16 +21,16 @@ export const getPatients = async ({
     .eq("doctor_auth_uid", HARDCODED_DOCTOR_ID)
     .order("id_patient", { ascending: true });
 
-  if (type && type !== "all") {
-    query = query.eq("alopecia_type", type);
+  if (alopeciaType && alopeciaType !== "all") {
+    query = query.eq("alopecia_type", alopeciaType);
   }
 
   if (status) {
     query = query.eq("status", status);
   }
 
-  if (searchTerm?.trim()) {
-    query = query.ilike("patient_name", `%${searchTerm}%`);
+  if (search?.trim()) {
+    query = query.ilike("patient_name", `%${search}%`);
   }
 
   if (page && perPage) {
@@ -43,7 +43,7 @@ export const getPatients = async ({
 
   if (error) throw error;
 
-  return { data, count };
+  return { data, count,error };
 };
 
 export const deletePatient = async (id: number) => {

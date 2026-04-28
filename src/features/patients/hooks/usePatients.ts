@@ -19,16 +19,30 @@ const usePatients = () => {
     setError(null);
 
     try {
-      const { data, count } = await getPatients({
+      const {
+        data,
+        error: serviceError,
+        count,
+      } = await getPatients({
         page,
         perPage,
         ...filters,
       });
 
+      if (serviceError) {
+        setError(serviceError);
+        setPatients([]);
+        setCount(0);
+        return;
+      }
+
       setPatients(data ?? []);
       setCount(count ?? 0);
     } catch (err) {
-      setError(err as PostgrestError);
+      setError({
+        message: "Error inesperado al cargar pacientes",
+      } as PostgrestError);
+
       setPatients([]);
       setCount(0);
     } finally {
