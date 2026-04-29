@@ -9,11 +9,11 @@ import PatientsHead from "./PatientsHead";
 import { useEffect, useState } from "react";
 import { perPage } from "../../../config/constants";
 import { toast } from "sonner";
-import type { PatientFormData, hookFilters } from "../types/patient.types";
+import type { PatientFormData, GetPatientsParams } from "../types/patient.types";
 
 const PatientsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [filters, setFilters] = useState<hookFilters>({});
+  const [filters, setFilters] = useState<GetPatientsParams>({});
 
   const { patients, error, loading, count, fetchPatients } = usePatients();
 
@@ -33,7 +33,7 @@ const PatientsPage = () => {
     setCurrentPage(page);
   };
 
-  const handleFilterPatients = (filter: Partial<hookFilters> | "all") => {
+  const handleFilterPatients = (filter: Partial<GetPatientsParams> | "all") => {
     if (filter === "all") {
       setFilters({});
       setCurrentPage(1);
@@ -86,8 +86,9 @@ const PatientsPage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-8">
-      <PatientsSearch setFilter={handleFilterPatients} />
+    <>
+    <PatientsSearch setFilter={handleFilterPatients} />
+    <div className="flex flex-col gap-8 py-6 px-6">
       <PatientsHead onSubmit={handleSubmitPatient} />
       <PatientFilter setFilter={handleFilterPatients} filters={filters} />
 
@@ -112,6 +113,7 @@ const PatientsPage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

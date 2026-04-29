@@ -7,14 +7,14 @@ import {
   PaginationLink,
   PaginationNext,
 } from "../../../components/ui/pagination";
-import type { PatientPaginatiosProps } from "../types/patient.types";
+import type { PatientPaginationProps } from "../types/patient.types";
 
 const PatientsPagination = ({
   totalPages,
   currentPage,
   onPageChange,
   totalRegister,
-}: PatientPaginatiosProps) => {
+}: PatientPaginationProps) => {
   const visiblePages = 4;
 
   let start = currentPage - Math.floor(visiblePages / 2);
@@ -32,7 +32,7 @@ const PatientsPagination = ({
   }
 
   return (
-    <div className="px-6 py-4 bg-slate-50/30 border border-t-0 border-slate-200 rounded-b-2xl flex items-center justify-between">
+    <div className="px-6 py-4 bg-white border border-t-0 border-slate-200 rounded-b-2xl flex items-center justify-between">
       <p className="flex gap-1 text-sm text-slate-500">
         <span className="font-bold">
           Mostrar {startRecord}-{endRecord}

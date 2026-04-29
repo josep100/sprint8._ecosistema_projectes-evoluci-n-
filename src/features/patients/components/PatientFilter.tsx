@@ -30,20 +30,20 @@ const PatientFilter = ({ setFilter, filters }: PatientFilterProps) => {
       <ul aria-label="Filtros" className="flex gap-4 flex-wrap">
         <li>
           <Button
-            className={getButtonStyles(!filters.type)}
+            className={getButtonStyles(!filters.alopeciaType)}
             onClick={() => setFilter("all")}
           >
             Todos los pacientes
           </Button>
         </li>
 
-        {filtersAlopeciaTypes.map((type) => (
-          <li key={type}>
+        {filtersAlopeciaTypes.map((alopeciaType) => (
+          <li key={alopeciaType}>
             <Button
-              className={getButtonStyles(filters.type === type)}
-              onClick={() => setFilter({ type })}
+              className={getButtonStyles(filters.alopeciaType === alopeciaType)}
+              onClick={() => setFilter({ alopeciaType })}
             >
-              {type}
+              {alopeciaType}
             </Button>
           </li>
         ))}
