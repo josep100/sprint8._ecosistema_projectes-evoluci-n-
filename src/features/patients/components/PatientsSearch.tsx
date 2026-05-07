@@ -9,7 +9,7 @@ const PatientsSearch = ({ setFilter }: PatientsSearchProps) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setFilter({
-        searchTerm: value.trim() === "" ? undefined : value,
+        search: value.trim() === "" ? undefined : value,
       });
     }, 400);
 
