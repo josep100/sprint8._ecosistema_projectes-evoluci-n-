@@ -43,7 +43,23 @@ export const getPatients = async ({
 
   if (error) throw error;
 
-  return { data, count,error };
+  return { data, count, error };
+};
+
+export const patientService = {
+  async searchPatients(query: string) {
+    const { data, error } = await supabase
+      .from("patients")
+      .select("id_patient, patient_name")
+      .ilike("patient_name", `%${query}%`)
+      .limit(10);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  },
 };
 
 export const deletePatient = async (id: number) => {

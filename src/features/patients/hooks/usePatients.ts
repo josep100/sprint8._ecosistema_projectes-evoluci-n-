@@ -1,4 +1,4 @@
-import { getPatients } from "../services/patients.service";
+import { getPatients, patientService } from "../services/patients.service";
 import type { Patient } from "../types/patient.types";
 import type { PostgrestError } from "@supabase/supabase-js";
 import { useState } from "react";
@@ -50,12 +50,31 @@ const usePatients = () => {
     }
   };
 
+  const searchPatients = async (query: string) => {
+    if (!query) {
+      setPatients([]);
+
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const data = await patientService.searchPatients(query);
+      setPatients(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     patients,
     error,
     loading,
     count,
     fetchPatients,
+    searchPatients
   };
 };
 

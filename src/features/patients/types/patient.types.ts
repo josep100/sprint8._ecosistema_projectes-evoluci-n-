@@ -5,11 +5,11 @@ import type { ReactNode } from "react";
 export type PatientFormData = z.infer<typeof patientSchema>;
 
 export type Patient = {
-  id_patient: number;
-  patient_image: string | null;
+  id_patient?: number;
+  patient_image?: string | null;
   patient_name: string;
-  alopecia_type: PatientFormData["alopeciaType"];
-  status: PatientFormData["status"];
+  alopecia_type?: PatientFormData["alopeciaType"];
+  status?: PatientFormData["status"];
 };
 
 export type Filters = {
