@@ -1,24 +1,38 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import esLocale from "@fullcalendar/core/locales/es";
 import FormDialog from "../../../components/shared/FormDialog";
-import interactionPlugin from "@fullcalendar/interaction";
 import AppointmentForm from "../components/AppointmentForm/AppointmentForm";
-import { useAppointments } from "../hooks/useAppointments";
 import CalendarEventContent from "../components/CalendarEventContent";
+import CalendarToolbar from "../components/CalendarToolbar";
+import { useAppointments } from "../hooks/useAppointments";
 import type { AppointmentFormValues } from "../types/appointment.types";
-
-
+import "../style/calendar.css";
 
 const AppointmentsPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedAppointment, setSelectedAppointment] = useState<AppointmentFormValues | null>(null);
+  const [selectedAppointment, setSelectedAppointment] =
+    useState<AppointmentFormValues | null>(null);
   const [open, setOpen] = useState(false);
-  const { events, createAppointment, updateAppointment, deleteAppointment } = useAppointments();
+  const [title, setTitle] = useState("");
+  const [currentView, setCurrentView] = useState("dayGridMonth");
+  const calendarRef = useRef<FullCalendar | null>(null);
+  const { events, createAppointment, updateAppointment, deleteAppointment } =
+    useAppointments();
+
+  useEffect(() => {
+    handleDatesSet();
+  }, []);
 
   const handleDateClick = (info: { date: Date }) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (info.date < today) return;
+
     setSelectedDate(info.date);
     setSelectedAppointment(null);
     setOpen(true);
@@ -28,7 +42,7 @@ const AppointmentsPage = () => {
     const event = info.event;
 
     setSelectedAppointment({
-      id: event.id,
+      id: Number(event.id),
       patient_id: event.extendedProps.patient_id,
       patient_name: event.title,
       appointment_date: event.start,
@@ -41,34 +55,57 @@ const AppointmentsPage = () => {
     setOpen(true);
   };
 
+  const handlePrev = () => {
+    calendarRef.current?.getApi().prev();
+  };
+
+  const handleNext = () => {
+    calendarRef.current?.getApi().next();
+  };
+
+  const handleToday = () => {
+    calendarRef.current?.getApi().today();
+  };
+
+  const handleChangeView = (view: string) => {
+    calendarRef.current?.getApi().changeView(view);
+  };
+
+  const handleDatesSet = () => {
+    const calendarApi = calendarRef.current?.getApi();
+
+    if (!calendarApi) return;
+
+    setTitle(calendarApi.view.title);
+
+    setCurrentView(calendarApi.view.type);
+  };
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="bg-white p-4 rounded-xl border border-slate-200">
+      <div className="p-4">
+        <CalendarToolbar
+          title={title}
+          currentView={currentView}
+          onPrev={handlePrev}
+          onNext={handleNext}
+          onToday={handleToday}
+          onChangeView={handleChangeView}
+        />
+
         <FullCalendar
+          ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
-          timeZone="local"
           locale={esLocale}
-          key={events.length}
           firstDay={1}
           height="auto"
+          events={events}
+          headerToolbar={false}
+          datesSet={handleDatesSet}
           dateClick={handleDateClick}
           eventClick={handleEventClick}
-          displayEventTime={true}
-          events={events}
           eventContent={(info) => <CalendarEventContent info={info} />}
-          headerToolbar={{
-            left: "title prev,next",
-            center: "",
-            right: "timeGridDay,timeGridWeek,dayGridMonth",
-          }}
-          buttonText={{
-            today: "Hoy",
-            month: "Mes",
-            week: "Semana",
-            day: "Día",
-          }}
           eventTimeFormat={{
             hour: "2-digit",
             minute: "2-digit",

@@ -94,7 +94,7 @@ const AppointmentForm = ({
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
+    <form className="p-6 space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
       <PatientSelector control={form.control} selectedAppointment={selectedAppointment} />
       <DateTimeSelector control={form.control} />
       <ToggleGroupField
@@ -102,9 +102,9 @@ const AppointmentForm = ({
         control={form.control}
         label="Tipo de tratamiento"
         options={[
-          { value: "scheduled", label: "Consulta", color: "blue" },
-          { value: "completed", label: "Análisis", color: "green" },
-          { value: "cancelled", label: "Tratamiento", color: "yellow" },
+          { value: "scheduled", label: "Consulta"},
+          { value: "completed", label: "Análisis"},
+          { value: "cancelled", label: "Tratamiento"},
         ]}
       />
       <ToggleGroupField
@@ -112,9 +112,9 @@ const AppointmentForm = ({
         control={form.control}
         label="Prioridad"
         options={[
-          { value: "low", label: "Baja", color: "green" },
-          { value: "medium", label: "Media", color: "yellow" },
-          { value: "high", label: "Alta", color: "red" },
+          { value: "low", label: "Baja"},
+          { value: "medium", label: "Media"},
+          { value: "high", label: "Alta"},
         ]}
       />
       <NotesField control={form.control} />

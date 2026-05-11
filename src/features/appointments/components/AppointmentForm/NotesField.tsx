@@ -18,13 +18,14 @@ const NotesField = ({ control }: NotesFieldProps) => {
 
         return (
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium">Notas</label>
+            <label htmlFor="note" className="text-sm font-medium">Notas</label>
 
             <textarea
+              id="note"
               {...field}
               maxLength={MAX_LENGTH}
               placeholder="Escribe notas sobre la cita..."
-              className="border rounded-md px-3 py-2 text-sm min-h-30 resize-none"
+              className="border rounded-md px-3 py-2 text-sm min-h-30 resize-none bg-surfacer-container"
             />
 
             <div className="text-xs text-right text-slate-500">

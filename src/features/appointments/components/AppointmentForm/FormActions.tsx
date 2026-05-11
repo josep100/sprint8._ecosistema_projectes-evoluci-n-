@@ -20,7 +20,7 @@ const FormActions = ({ onCancel, onDelete, isEdit, isSubmitting }: FormActionsPr
         <Button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 text-sm rounded-lg border border-slate-300 hover:bg-slate-100 transition"
+          className="px-6 py-2.5 rounded-xl text-sm font-bold bg-transparent text-slate-600 hover:bg-slate-200 transition-all"
         >
           Cancelar
         </Button>
@@ -28,7 +28,7 @@ const FormActions = ({ onCancel, onDelete, isEdit, isSubmitting }: FormActionsPr
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition disabled:opacity-50"
+          className="px-8 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition disabled:opacity-50"
         >
           {isSubmitting
             ? isEdit

@@ -4,7 +4,6 @@ import clsx from "clsx";
 type Option = {
   value: string;
   label: string;
-  color?: "blue" | "green" | "yellow" | "red";
 };
 
 type ToggleGroupFieldProps = {
@@ -12,13 +11,6 @@ type ToggleGroupFieldProps = {
   control: any;
   label: string;
   options: Option[];
-};
-
-const colorStyles = {
-  blue: "border-blue-600 bg-blue-50 text-blue-600",
-  green: "border-green-600 bg-green-50 text-green-600",
-  yellow: "border-yellow-600 bg-yellow-50 text-yellow-600",
-  red: "border-red-600 bg-red-50 text-red-600",
 };
 
 const ToggleGroupField = ({
@@ -33,9 +25,18 @@ const ToggleGroupField = ({
       name={name}
       render={({ field }) => (
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium">{label}</label>
+          <label id={`${name}-label`} className="text-sm font-medium">{label}</label>
 
-          <div className="flex gap-2">
+          <div
+            role="group"
+            aria-labelledby={`${name}-label`}
+            className={clsx(
+              "grid grid-cols-3 gap-3",
+              label === "Prioridad"
+                ? "bg-surfacer-container p-1 rounded-xl"
+                : "",
+            )}
+          >
             {options.map((option) => {
               const isActive = field.value === option.value;
 
@@ -45,10 +46,17 @@ const ToggleGroupField = ({
                   type="button"
                   onClick={() => field.onChange(option.value)}
                   className={clsx(
-                    "px-4 py-2 rounded-lg border text-sm transition",
-                    isActive
-                      ? colorStyles[option.color || "blue"]
-                      : "border-slate-300 hover:bg-slate-100"
+                    "px-4 py-2 rounded-lg text-sm transition cursor-pointer border",
+
+                    label === "Tipo de tratamiento" &&
+                      (isActive
+                        ? "bg-blue-50 border-blue-600 text-blue-900"
+                        : "bg-white border-slate-300 hover:bg-slate-100 text-slate-700"),
+
+                    label === "Prioridad" &&
+                      (isActive
+                        ? "bg-white border-white shadow-sm text-slate-900"
+                        : "bg-transparent border-transparent hover:bg-white/50 text-slate-500"),
                   )}
                 >
                   {option.label}

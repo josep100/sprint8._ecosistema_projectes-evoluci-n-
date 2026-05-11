@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 const Sidebar = () => {
   return (
-    <aside className="w-64 border-r border-slate-200 bg-white flex flex-col">
+    <aside className="w-64 border-r border-slate-200 bg-white flex flex-col shadow-2xl">
       <div className="p-6 flex items-center gap-3">
         <div className="h-10 w-10 rounded-full bg-primary-avatar flex items-center justify-center text-white">
           <Brain />
@@ -58,7 +58,7 @@ const Sidebar = () => {
 
         <div className="flex-1 min-w-0">
           <p className="text-xs font-bold truncate">Dr. Aris Thorne</p>
-          <p className="text-[10px] text-slate-500">Chief Dermatologist</p>
+          <p className="text-xs text-slate-500">Chief Dermatologist</p>
         </div>
       </section>
     </aside>

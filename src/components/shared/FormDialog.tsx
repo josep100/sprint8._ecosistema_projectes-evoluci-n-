@@ -16,9 +16,9 @@ const FormDialog = ({
 }: formDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 max-w-xl! w-full rounded-2xl overflow-hidden flex flex-col max-h-[90vh]!">
+      <DialogContent className="bg-[#ffffff] sm:max-w-lg p-0">
         <DialogHeader className="px-8 py-6 border-b border-slate-100">
-          <DialogTitle className="text-xl font-bold text-slate-900">
+          <DialogTitle className="text-xl font-black tracking-tight text-on-surface">
             {title}
           </DialogTitle>
           <DialogDescription className="text-sm text-slate-500 mt-1">
