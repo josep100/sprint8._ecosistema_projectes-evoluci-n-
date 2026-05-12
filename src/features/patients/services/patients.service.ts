@@ -1,11 +1,11 @@
 import supabase from "../../../shared/services/supabaseClient";
-import HARDCODED_DOCTOR_ID from "../../../config/constants";
 import type {
   PatientFormData,
   GetPatientsParams,
 } from "../types/patient.types";
 import { mapFormToPatient } from "../utils/patient.mapper";
 
+const { data: userData } = await supabase.auth.getUser();
 export const getPatients = async ({
   page,
   perPage,
@@ -18,7 +18,6 @@ export const getPatients = async ({
     .select("id_patient, patient_image, patient_name, alopecia_type, status", {
       count: "exact",
     })
-    .eq("doctor_auth_uid", HARDCODED_DOCTOR_ID)
     .order("id_patient", { ascending: true });
 
   if (alopeciaType && alopeciaType !== "all") {
@@ -76,7 +75,7 @@ export const createPatient = async (data: PatientFormData) => {
 
   const { error } = await supabase.from("patients").insert({
     ...patient,
-    doctor_auth_uid: HARDCODED_DOCTOR_ID,
+    doctor_auth_uid: userData.user?.id,
     id_clinics_FK: 4,
   });
 

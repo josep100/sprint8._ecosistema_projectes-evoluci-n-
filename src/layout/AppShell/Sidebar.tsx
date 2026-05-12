@@ -1,9 +1,26 @@
 import { NavLink } from "react-router-dom";
 import { Brain } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../components/ui/dropdown-menu";
 import navigation from "../../config/navigation";
 import clsx from "clsx";
+import { LogOut } from "lucide-react";
+import { authService } from "../../features/auth/services/auth.service";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await authService.logout();
+
+    navigate("/");
+  };
+
   return (
     <aside className="w-64 border-r border-slate-200 bg-white flex flex-col shadow-2xl">
       <div className="p-6 flex items-center gap-3">
@@ -38,29 +55,38 @@ const Sidebar = () => {
           ))}
         </ul>
       </nav>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <section
+            aria-label="Perfil del doctor"
+            className="mt-6 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-100 transition"
+          >
+            <figure className="w-8 h-8 rounded-full bg-slate-300 shrink-0 overflow-hidden">
+              <img
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0t7u5T8ai7J9XuzKo64-AnD9pv-Remlb8KvQCLW9_Q48e1Bd2A62Dm00zZPW2Q_o_s5ToLWfgo8usEa5D7OwFLmbT9Ic4JLuBMaVC1sP6M_zA088xXkaKMW8WgUZrmiJPXD5Cxxe_yV6D4_N9TCiY8Ve0KeS7JO8ojVyQYtxevlQCeraetRTB52G-vTjfP-hRZuVXkN_-_MM3d66Rjb3awZB9tzX4lr1key7lXIqFsIHW2DUhJ637iaJCSvA1VxcNy1XMyx7Jc4Qn"
+                alt="Foto de perfil del doctor"
+                className="w-full h-full object-cover"
+              />
+            </figure>
 
-      <div className="p-4 mt-auto">
-        <button className="w-full bg-primary text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-primary/90 transition">
-          + Nueva cita
-        </button>
-      </div>
-      <section
-        aria-label="Perfil del doctor"
-        className="mt-6 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center gap-3"
-      >
-        <figure className="w-8 h-8 rounded-full bg-slate-300 shrink-0 overflow-hidden">
-          <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0t7u5T8ai7J9XuzKo64-AnD9pv-Remlb8KvQCLW9_Q48e1Bd2A62Dm00zZPW2Q_o_s5ToLWfgo8usEa5D7OwFLmbT9Ic4JLuBMaVC1sP6M_zA088xXkaKMW8WgUZrmiJPXD5Cxxe_yV6D4_N9TCiY8Ve0KeS7JO8ojVyQYtxevlQCeraetRTB52G-vTjfP-hRZuVXkN_-_MM3d66Rjb3awZB9tzX4lr1key7lXIqFsIHW2DUhJ637iaJCSvA1VxcNy1XMyx7Jc4Qn"
-            alt="Foto de perfil del Dr. Aris Thorne"
-            className="w-full h-full object-cover"
-          />
-        </figure>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold truncate">Dr. Aris Thorne</p>
 
-        <div className="flex-1 min-w-0">
-          <p className="text-xs font-bold truncate">Dr. Aris Thorne</p>
-          <p className="text-xs text-slate-500">Chief Dermatologist</p>
-        </div>
-      </section>
+              <p className="text-xs text-slate-500">Chief Dermatologist</p>
+            </div>
+          </section>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="start" className="w-61">
+          <DropdownMenuItem
+            onClick={handleLogout}
+            className="cursor-pointer text-red-600 focus:text-red-600"
+          >
+            <LogOut className="size-4 mr-2" />
+            Cerrar sesión
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </aside>
   );
 };

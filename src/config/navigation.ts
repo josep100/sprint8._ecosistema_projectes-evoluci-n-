@@ -15,22 +15,22 @@ const navigation = [
   },
   {
     label: "Pacientes",
-    href: "/patients",
+    href: "patients",
     icon: Users,
   },
   {
     label: "Calendario",
-    href: "/Appointments",
+    href: "Appointments",
     icon: CalendarClock,
   },
   {
     label: "Tratamiento",
-    href: "/treatments",
+    href: "treatments",
     icon: Activity,
   },
   {
     label: "Analítica",
-    href: "/analytics",
+    href: "analytics",
     icon: BarChart3,
   },
 ];
