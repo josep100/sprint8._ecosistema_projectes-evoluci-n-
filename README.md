@@ -18,11 +18,10 @@ El proyecto se centra en:
 
 ![login](./src/assets/login.png)
 
-![dashboard](./src/assets/dashboard.png)
+![dashboard](./src/assets/patient.png)
 
-![patients](./src/assets/patients.png)
+![patients](./src/assets/calendar.png)
 
-![appointments](./src/assets/appointments.png)
 
 ---
 
