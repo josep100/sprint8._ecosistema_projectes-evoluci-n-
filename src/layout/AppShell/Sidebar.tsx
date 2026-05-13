@@ -39,6 +39,7 @@ const Sidebar = () => {
             <li key={item.href}>
               <NavLink
                 to={item.href}
+                end={item.href === "/app"}
                 className={({ isActive }) =>
                   clsx(
                     "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors",

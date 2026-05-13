@@ -2,11 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../schema/loginSchema";
 import type { LoginSchema } from "../schema/loginSchema";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "../../../components/ui/card";
+import { Card, CardContent, CardHeader } from "../../../components/ui/card";
 
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
@@ -19,7 +15,7 @@ import {
   IdCard,
   Eye,
   Activity,
-  ClipboardList
+  ClipboardList,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -39,16 +35,13 @@ const LoginForm = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const onSubmit = async (data: LoginSchema) => {
-      await login(data.email, data.password);
-      navigate("/app");
+    await login(data.email, data.password);
+    navigate("/app");
   };
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-      <section
-        aria-labelledby="login-title"
-        className="w-full max-w-md"
-      >
+      <section aria-labelledby="login-title" className="w-full max-w-md">
         <Card className="border-slate-200 shadow-2xl rounded-2xl">
           <CardHeader className="space-y-3 text-center p-8">
             <div className="space-y-1">
@@ -66,17 +59,13 @@ const LoginForm = () => {
           </CardHeader>
 
           <CardContent className="p-8">
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="space-y-5"
-            >
-              
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <div className="space-y-2">
                 <label
                   htmlFor="collegeId"
                   className="text-sm font-semibold text-slate-700"
                 >
-                  número de colegiado 
+                  email
                 </label>
 
                 <div className="relative">
@@ -86,19 +75,16 @@ const LoginForm = () => {
                     id="email"
                     type="text"
                     placeholder="doctor@clinic.com"
-                    className="pl-11 py-3"
+                    className="pl-11 py-5"
                     {...register("email")}
                   />
                 </div>
 
                 {errors.email && (
-                  <p className="text-sm text-red-500">
-                    {errors.email.message}
-                  </p>
+                  <p className="text-sm text-red-500">{errors.email.message}</p>
                 )}
               </div>
 
-              
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <label
@@ -116,7 +102,7 @@ const LoginForm = () => {
                     id="password"
                     type="password"
                     placeholder="••••••••"
-                    className="pl-10 pr-10"
+                    className="pl-10 pr-10 py-5"
                     {...register("password")}
                   />
 
@@ -136,44 +122,25 @@ const LoginForm = () => {
                 )}
               </div>
 
-              {/* Submit */}
               <Button
                 type="submit"
                 className="h-12 w-full gap-2 rounded-xl text-sm font-bold"
               >
-                <Fingerprint className="size-4" />
-
-                Secure Biometric Access
+                Iniciar sesión
               </Button>
-
-              {/* Security Info */}
-              <div className="flex flex-wrap items-center justify-center gap-4 border-t border-slate-200 pt-5">
-                <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-slate-500">
-                  <BadgeCheck className="size-4 text-green-600" />
-
-                  256-bit Encrypted
-                </div>
-
-                <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-slate-500">
-                  <ShieldCheck className="size-4 text-green-600" />
-
-                  HIPAA Compliant
-                </div>
-              </div>
             </form>
           </CardContent>
         </Card>
 
-        {/* Warning */}
         <footer className="mt-8 text-center">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-red-700">
             Solo personal autorizado
           </div>
 
           <p className="mx-auto max-w-xs text-[11px] leading-relaxed text-slate-500">
-            El acceso a este sistema está restringido. Los intentos no autorizados de
-            acceder o utilizar este portal pueden dar lugar a un proceso penal y
-            sanciones civiles.
+            El acceso a este sistema está restringido. Los intentos no
+            autorizados de acceder o utilizar este portal pueden dar lugar a un
+            proceso penal y sanciones civiles.
           </p>
         </footer>
         <div className="absolute bottom-10 left-10 opacity-10 pointer-events-none">

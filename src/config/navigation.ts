@@ -10,7 +10,7 @@ import {
 const navigation = [
   {
     label: "Panel",
-    href: "/",
+    href: "/app",
     icon: LayoutDashboard,
   },
   {
